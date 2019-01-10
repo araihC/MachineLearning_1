@@ -249,7 +249,7 @@ for i in range(0, CARRIERA.shape[0]):
     index = elenco_corsi.index(CARRIERA.iloc[i]['Corso'])
     CARRIERA.iloc[i, CARRIERA.columns.get_loc('Corso')] = index
 
-#inserisco una nuova colonna che classifica la media in una 'fascia'
+#inserisco una nuova colonna che classifica la media in una 'fascia' $ FASCE
 #A: 28-30
 #B: 26-28
 #C: 23-26
@@ -276,4 +276,30 @@ CARRIERA.drop(labels='PROVINCIA_ISTITUTO_DIPLOMA', axis=1, inplace = True) #elmi
 CARRIERA.drop(labels='Stato_Laurea', axis=1, inplace = True) #elmino la colonna dell'immatricolazione (mi interessa solo la differenza)
 CARRIERA.drop(labels='Voto_Laurea', axis=1, inplace = True) #elmino la colonna dell'immatricolazione (mi interessa solo la differenza)
 
-CARRIERA.to_excel(save_path + 'CARRIERA.xlsx', 'Minimal')
+writer = pd.ExcelWriter(save_path + 'CARRIERA.xlsx', engine = 'xlsxwriter')
+CARRIERA.to_excel(writer, sheet_name = 'Minimal_4')
+
+#--------------- 3 Fasce
+
+#inserisco una nuova colonna che classifica la media in una 'fascia'
+#A: 28-30
+#B: 26-28
+#C: 23-26
+#D: 18-23
+zona_media = []
+for i in range(0, CARRIERA.shape[0]):
+    #if CARRIERA.iloc[i]['Media_Pesata'] >= 18 and CARRIERA.iloc[i]['Media_Pesata'] < 23:
+    #    zona_media.append('D')
+    if CARRIERA.iloc[i]['Media_Pesata'] >= 18 and CARRIERA.iloc[i]['Media_Pesata'] < 22:
+        zona_media.append('C')
+    if CARRIERA.iloc[i]['Media_Pesata'] >= 22 and CARRIERA.iloc[i]['Media_Pesata'] < 26:
+        zona_media.append('B')
+    if CARRIERA.iloc[i]['Media_Pesata'] >= 26 and CARRIERA.iloc[i]['Media_Pesata'] <= 30:
+        zona_media.append('A')
+CARRIERA.loc[:,'Media_Zona'] = zona_media
+del(zona_media)
+#--------------------------------Scrivo il dataset opportunemente modificato su un nuovo file.....................
+
+CARRIERA.to_excel(writer, sheet_name = 'Minimal_3')
+writer.save()
+writer.close()

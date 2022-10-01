@@ -44,11 +44,11 @@ from pandas_ml import ConfusionMatrix
 #----------------------------Set params and options-----------------------------
 #----------------------------- Parameter definition ----------------------------
 path = '/Users/Mac/Desktop/ML/ML_project/'
-path_data = path + 'Cleaned_data/'
-file_name = path_data + 'CARRIERA.xlsx'
+path_data = os.path.join(path, 'Cleaned_data/')
+file_name = os.path.join(path_data, 'CARRIERA.xlsx')
 sheet_name = 'Minimal_4'
 evaluation_file_name = 'Evaluation.txt'
-path_results = path + 'Results/'+ sheet_name + '/RF/'
+path_results = os.path.join(path, 'Results/', sheet_name, '/RF/')
 
 if not os.path.exists(path_results):
    os.makedirs(path_results)
